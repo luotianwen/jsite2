@@ -1,0 +1,25 @@
+
+<%
+	var p = {
+		// 标签参数
+		id: id!path,
+    	path: path!,
+    	class:class!"",
+	    data:data!,
+    	name:name!path,
+    	value:value!"",
+    	onchange:onchange!"",
+    	disabled:disabled!"",
+
+		onValue:onValue!""
+	};
+	
+
+%>
+
+<select id="${p.id}" name="${p.path}" class="${p.class}" onchange="${p.onchange}" <% if(!isEmpty(p.disabled)) {%> disabled="disabled" <%}%> >
+	<%
+		var html = toDocument("select", tagBody, p.data, p.name, p.value, p.onValue);
+	 	print(html);
+	%>
+</select>  

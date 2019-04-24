@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template>
+	<name>viewList</name>
+	<filePath>src/main/resources/views/${lastPackageName}/${moduleName}/${subModuleName}</filePath>
+	<fileName>${className}List.html</fileName>
+	<content><![CDATA[
+<% layout('/layout/default.html', {title: '${functionNameSimple}', libs: ['dataGrid']}){ %>
+<div class="main-content">
+	<div class="box box-main">
+		<div class="box-header">
+			<div class="box-title">
+				<i class="fa fa-cubes"></i> ${functionNameSimple}
+			</div>
+			<div class="box-tools pull-right">
+				<a href="#" class="btn btn-default" id="btnRefreshTree" title="刷新"><i class="fa fa-refresh"></i> 刷新</a>
+				<a href="#" class="btn btn-default" id="btnExpandTreeNode" title="展开一级"><i class="fa fa-angle-double-down"></i> 展开</a>
+				<a href="#" class="btn btn-default" id="btnCollapseTreeNode" title="折叠全部"><i class="fa fa-angle-double-up"></i> 折叠</a>
+				<% if(hasPermi('${permissionPrefix}:edit')){ %>
+					<a href="/${urlPrefix}/form" class="btn btn-default btnTool" title="添加根${functionNameSimple}"><i class="fa fa-plus"></i> 添加根${functionNameSimple}</a>
+				<% } %>
+			</div>
+		</div>
+		<div class="box-body">
+			<form id="searchForm" action="${r"${ctx}"}/${urlPrefix}/listData" method="post" class="form-inline hide" >
+				<button type="submit" class="btn btn-primary btn-sm">查询</button>
+				<button type="reset" class="btn btn-default btn-sm">重置</button>
+			</form>
+			<table id="dataGrid"></table>
+		</div>
+	</div>
+</div>
+<% } %>
+<script>
+//初始化DataGrid对象
+$('#dataGrid').dataGrid({
+	searchForm: $("#searchForm"),
+	columnModel: [
+		<#list table.columnList as c>
+		<#if c.isList?? && c.isList == "1">
+		{header:'${c.comments}', name:'${c.javaFieldId}', index:'a.${c.name}', width:90, align:"center"},
+		</#if>
+		</#list>
+		{header:'操作', name:'actions', width:100, sortable:false, title:false, align:"center",formatter: function(val, obj, row, act){
+			var actions = [];
+			<% if(hasPermi('${permissionPrefix}:edit')){ %>
+				actions.push('<a href="/${urlPrefix}/form?id='+row.id+'" class="btnList" title="修改${functionNameSimple}"><i class="fa fa-pencil"></i></a>');
+				actions.push('<a href="${r"${ctx}"}/${urlPrefix}/delete?id='+row.id+'" class="btnList" title="删除${functionNameSimple}" data-confirm="要删除该${functionNameSimple}及所有子${functionNameSimple}吗？"><i class="fa fa-trash-o"></i></a>');
+				actions.push('<a href="/${urlPrefix}/form?parentId='+row.id+'" class="btnList" title="添加下级${functionNameSimple}"><i class="fa fa-plus-square"></i></a>');
+			<% } %>
+			return actions.join('');
+		}}
+	],
+	treeGrid: true,
+	defaultExpandLevel: 0,
+	expandNodeClearPostData: 'name',
+	treeIcons : {
+		plus: "ui-icon-circlesmall-plus",
+		minus: "ui-icon-circlesmall-minus",
+		leaf : "ui-icon-document"
+	},
+	// 加载成功后执行事件
+	ajaxSuccess: function(data){
+
+	}
+});
+
+</script>]]>
+	</content>
+</template>

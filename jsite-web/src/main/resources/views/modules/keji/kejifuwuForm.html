@@ -1,0 +1,126 @@
+<% layout('/layout/default.html', {title: '保存科技服务成功详情', libs: ['validate', 'icheck']}){ %>
+<div class="main-content">
+    <div class="box box-main">
+        <div class="box-header with-border">
+            <div class="box-title">
+                <i class="fa fa-pencil-square-o"></i> ${kejifuwu.isNewRecord?'新增保存科技服务成功':'编辑保存科技服务成功'}
+            </div>
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <#form:form id="inputForm" model="${kejifuwu}" action="${ctx}/keji/kejifuwu/save" method="post"
+        class="form-horizontal">
+        <div class="box-body">
+            <#form:hidden path="id"/>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" title="">
+                            <span class="required hide">*</span> 项目类型：<i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-8">
+                            <#form:select path="kejiType" name="label" data="getDictList:keji_keji_type"
+                            class="form-control required " />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" title="">
+                            <span class="required hide">*</span> 项目名字：<i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-8">
+                            <#form:input path="proname" maxlength="255" class="form-control required "/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" title="">
+                            <span class="required hide">*</span> 开始时间：<i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-8">
+                            <input id="startTime" type="text" name="startTime" maxlength="20" readonly="readonly"
+                                   class="form-control required "
+                                   value="${kejifuwu.startTime}"
+                                   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" title="">
+                            备注信息：</label>
+                        <div class="col-sm-8">
+                            <#form:textarea path="remarks" rows="4" maxlength="255" class="form-control input-xxlarge "/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" title="">
+                            <span class="required hide">*</span> 结束时间：<i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-8">
+                            <input id="endTime" type="text" name="endTime" maxlength="20" readonly="readonly"
+                                   class="form-control required "
+                                   value="${kejifuwu.endTime}"
+                                   onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss',isShowClear:false});"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" title="">
+                            <span class="required hide">*</span> 申请理由：<i class="fa icon-question hide"></i>
+                        </label>
+                        <div class="col-sm-8">
+                            <#form:input path="reason" maxlength="255" class="form-control required "/>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="box-footer">
+            <div class="row">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <% if (hasPermi('keji:kejifuwu:edit')){ %>
+                    <button type="submit" class="btn btn-sm btn-primary" id="btnSubmit"><i class="fa fa-check"></i>
+                        保 存
+                    </button>
+                    <% } %>
+                    <button type="button" class="btn btn-sm btn-default" id="btnCancel"
+                            onclick="window.parent.closeCurrentTabPage()"><i class="fa fa-reply-all"></i> 关 闭
+                    </button>
+                </div>
+            </div>
+        </div>
+    </#form:form>
+</div>
+
+</div>
+</div>
+<% } %>
+
+<script type="text/javascript">
+    $("#inputForm").validate({
+        submitHandler: function (form) {
+            js.ajaxSubmitForm($(form), function (data) {
+                js.showMessage(data.message);
+                if (data.result == 'true') {
+                    window.parent.closeCurrentTabPage(window.parent.refreshTab);
+                }
+            });
+        }
+    });
+</script>

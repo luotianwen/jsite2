@@ -1,0 +1,18 @@
+<%
+	var p = {
+		// 标签参数
+	    id: id!,                    // 表单ID
+	    model: model!,                // 绑定Model对象，例如：${user!}
+	    action: action!,            // 表单请求地址
+	    method: method!,            // 请求方法，默认 post
+        enctype: enctype!,
+	    class:class!
+	};
+%>
+
+<form id="${p.id}" action="${p.action}" method= "${p.method}" enctype="${p.enctype}" class= "${p.class}">
+ <%
+ 	var html = toDocument("form", tagBody, p.model);
+ 	print(html);
+ %>
+</form>

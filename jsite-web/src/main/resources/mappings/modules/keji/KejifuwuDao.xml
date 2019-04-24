@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsite.modules.keji.dao.KejifuwuDao">
+    
+	<sql id="kejifuwuColumns">
+				a.id AS "id",
+		a.proc_ins_id AS "procInsId",
+		a.start_time AS "startTime",
+		a.end_time AS "endTime",
+		a.keji_type AS "kejiType",
+		a.reason AS "reason",
+		a.dept_lead_text AS "deptLeadText",
+		a.hr_text AS "hrText",
+		a.apply_time AS "applyTime",
+		a.create_by AS "createBy.id",
+		a.create_date AS "createDate",
+		a.update_by AS "updateBy.id",
+		a.update_date AS "updateDate",
+		a.remarks AS "remarks",
+		a.del_flag AS "delFlag",
+		a.proname AS "proname"
+	</sql>
+	
+	<sql id="kejifuwuJoins">
+	</sql>
+    
+	<select id="get" resultType="Kejifuwu">
+		SELECT 
+			<include refid="kejifuwuColumns"/>
+		FROM kejifuwu a
+		<include refid="kejifuwuJoins"/>
+		WHERE a.id = #{id}
+	</select>
+	
+	<select id="findList" resultType="Kejifuwu">
+		SELECT 
+			<include refid="kejifuwuColumns"/>
+		FROM kejifuwu a
+		<include refid="kejifuwuJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<select id="findAllList" resultType="Kejifuwu">
+		SELECT 
+			<include refid="kejifuwuColumns"/>
+		FROM kejifuwu a
+		<include refid="kejifuwuJoins"/>
+		<where>
+			a.del_flag = #{DEL_FLAG_NORMAL}
+		</where>		
+		<choose>
+			<when test="page !=null and page.orderBy != null and page.orderBy != ''">
+				ORDER BY ${page.orderBy}
+			</when>
+			<otherwise>
+				ORDER BY a.update_date DESC
+			</otherwise>
+		</choose>
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO kejifuwu(
+			id,
+			proc_ins_id,
+			start_time,
+			end_time,
+			keji_type,
+			reason,
+			dept_lead_text,
+			hr_text,
+			apply_time,
+			create_by,
+			create_date,
+			update_by,
+			update_date,
+			remarks,
+			del_flag,
+			proname
+		) VALUES (
+			#{id},
+			#{procInsId},
+			#{startTime},
+			#{endTime},
+			#{kejiType},
+			#{reason},
+			#{deptLeadText},
+			#{hrText},
+			#{applyTime},
+			#{createBy.id},
+			#{createDate},
+			#{updateBy.id},
+			#{updateDate},
+			#{remarks},
+			#{delFlag},
+			#{proname}
+		)
+	</insert>
+	
+	<update id="update">
+		UPDATE kejifuwu SET 	
+			proc_ins_id = #{procInsId},
+			start_time = #{startTime},
+			end_time = #{endTime},
+			keji_type = #{kejiType},
+			reason = #{reason},
+			dept_lead_text = #{deptLeadText},
+			hr_text = #{hrText},
+			apply_time = #{applyTime},
+			update_by = #{updateBy.id},
+			update_date = #{updateDate},
+			remarks = #{remarks},
+			proname = #{proname}
+		WHERE id = #{id}
+	</update>
+	<update id="updateLeadText">
+		UPDATE kejifuwu SET
+			dept_lead_text = #{deptLeadText}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updateHRText">
+		UPDATE kejifuwu SET
+			hr_text = #{hrText}
+		WHERE id = #{id}
+	</update>
+	<update id="delete">
+		UPDATE kejifuwu SET 
+			del_flag = #{DEL_FLAG_DELETE}
+		WHERE id = #{id}
+	</update>
+	
+</mapper>

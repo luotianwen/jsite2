@@ -1,0 +1,46 @@
+<% layout('/layout/default.html', {title: '登录', libs: ['layout','validate', 'login'], bodyClass: 'login-page'}){ %>
+<% var productName = @Global.getProperty('productName'), productVersion = @Global.getProperty('version'); %>
+
+<div class="lowin">
+	<h1><b style="color: #0d6aad; font-size: 26px;">${productName}</b> <small>${productVersion}</small></h1>
+	<div class="lowin-wrapper">
+		<div class="lowin-box lowin-login" >
+			<div class="lowin-box-inner">
+				<form id="loginForm" action="${ctx}/login" method="post">
+					<div class="lowin-group has-feedback">
+						<input type="text" id="username" name="username" value="" autocomplete="username"
+							   class="lowin-input required" data-msg-required="请填写登录账号."
+							   placeholder="登录账号" />
+					</div>
+					<div class="lowin-group has-feedback">
+						<span class="glyphicon form-control-feedback" title="登录密码，鼠标按下显示密码"
+						  onmousedown="$('#password').attr('type','text')"
+						  onmouseup="$('#password').attr('type','password')"></span>
+						<input type="password" id="password" name="password" value="" autocomplete="current-password"
+							   class="lowin-input required" data-msg-required="请填写登录密码."
+							   placeholder="登录密码"  />
+					</div>
+					<!-- <% if(isValidateCodeLogin) {%>   <% } %> -->
+					<div class="lowin-group form-group has-feedback" id="isValidCodeLogin" style="display:${isValidateCodeLogin?'blank':'none'}">
+						<#form:validcode name="validateCode" />
+					</div>
+					<div class="lowin-group">
+						<div class="checkbox icheck">
+							<label title="公共场所慎用,下次不需要再填写帐号">
+								<input type="checkbox" name="rememberUserCode" data-style="square-blue">&nbsp;<b>记住账号</b>
+								<input type="checkbox" name="rememberMe" data-style="square-blue">&nbsp;<b>记住密码</b>
+							</label>
+						</div>
+					</div>
+					<button class="lowin-btn login-btn">
+						立即登录
+					</button>
+					<div class="text-foot">
+						&copy; ${@DateUtils.getYear()} ${productName}
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<% } %>
